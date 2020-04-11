@@ -4,4 +4,8 @@ members = [
     "storage",
     "file",
     "web",
+
+    "examples/fib/fib",
+    "examples/fib/file",
+    "examples/fib/web",
 ]
