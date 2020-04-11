@@ -1,0 +1,25 @@
+[package]
+name = "general_storage_web"
+description = "Implementation of general_storage::Storage backed by LocalStorage for use in web browsers"
+version = "0.1.0"
+authors = ["Stephen Sherratt <stephen@sherra.tt>"]
+license = "MIT"
+readme = "README.md"
+homepage = "https://github.com/stevebob/general-storage.git"
+repository = "https://github.com/stevebob/general-storage.git"
+documentation = "https://docs.rs/general_storage_web"
+edition = "2018"
+
+[dependencies]
+general_storage = { path = "../storage", version = "0.1" }
+wasm-bindgen = "0.2"
+js-sys = "0.3"
+serde_json = "1.0"
+log = "0.4"
+
+[dependencies.web-sys]
+version = "0.3"
+features = [
+  'Window',
+  'Storage',
+]

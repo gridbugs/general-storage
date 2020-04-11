@@ -1,0 +1,21 @@
+[package]
+name = "general_storage_file"
+description = "Implementation of general_storage::Storage backed by files."
+version = "0.1.0"
+authors = ["Stephen Sherratt <stephen@sherra.tt>"]
+license = "MIT"
+readme = "README.md"
+homepage = "https://github.com/stevebob/general-storage.git"
+repository = "https://github.com/stevebob/general-storage.git"
+documentation = "https://docs.rs/general_storage_file"
+edition = "2018"
+
+[features]
+yaml = ["general_storage/yaml"]
+json = ["general_storage/json"]
+toml = ["general_storage/toml"]
+bincode = ["general_storage/bincode"]
+compress = ["general_storage/compress"]
+
+[dependencies]
+general_storage = { path = "../storage", version = "0.1" }

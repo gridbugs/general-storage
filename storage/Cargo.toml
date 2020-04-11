@@ -1,0 +1,24 @@
+[package]
+name = "general_storage"
+description = "Interface to persistent storage"
+version = "0.1.0"
+authors = ["Stephen Sherratt <stephen@sherra.tt>"]
+license = "MIT"
+readme = "README.md"
+homepage = "https://github.com/stevebob/general-storage.git"
+repository = "https://github.com/stevebob/general-storage.git"
+documentation = "https://docs.rs/general_storage"
+edition = "2018"
+
+[features]
+yaml = ["serde_yaml"]
+json = ["serde_json"]
+compress = ["flate2"]
+
+[dependencies]
+serde = "1.0"
+flate2 = { version = "1.0", optional = true }
+serde_yaml = { version = "0.8", optional = true }
+serde_json = { version = "1.0", optional = true }
+bincode = { version = "1.1", optional = true }
+toml = { version = "0.5", optional = true }
