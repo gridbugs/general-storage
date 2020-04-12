@@ -6,12 +6,21 @@ pub use general_storage::*;
 ))]
 mod implementation {
     use super::*;
-    pub mod backend {}
     pub struct StaticStorage(());
 
     const WARNING: &str = "using null implementation of StaticStorage";
 
+    pub mod backend {
+        #[cfg(all(feature = "general_storage_file", feature = "general_storage_web"))]
+        pub use general_storage_file::*;
+        #[cfg(all(feature = "general_storage_file", feature = "general_storage_web"))]
+        pub use general_storage_web::*;
+    }
+
     impl StaticStorage {
+        pub fn new<A>(_: A) -> Self {
+            Self(())
+        }
         pub fn exists<K>(&self, _key: K) -> bool
         where
             K: AsRef<str>,
