@@ -1,13 +1,15 @@
 pub use general_storage::*;
 
-#[cfg(all(feature = "general_storage_file", feature = "general_storage_web"))]
-compile_error!("Choose exactly one out of: general_storage_file, general_storage_web");
-
-#[cfg(not(any(feature = "general_storage_file", feature = "general_storage_web")))]
+#[cfg(any(
+    not(any(feature = "general_storage_file", feature = "general_storage_web")),
+    all(feature = "general_storage_file", feature = "general_storage_web"),
+))]
 mod implementation {
     use super::*;
     pub mod backend {}
     pub struct StaticStorage(());
+
+    const WARNING: &str = "using null implementation of StaticStorage";
 
     impl StaticStorage {
         pub fn exists<K>(&self, _key: K) -> bool
@@ -105,7 +107,7 @@ mod implementation {
     }
 }
 
-#[cfg(feature = "general_storage_file")]
+#[cfg(all(feature = "general_storage_file", not(feature = "general_storage_web")))]
 mod implementation {
     use super::*;
     use backend::FileStorage;
@@ -207,7 +209,7 @@ mod implementation {
     }
 }
 
-#[cfg(feature = "general_storage_web")]
+#[cfg(all(feature = "general_storage_web", not(feature = "general_storage_file")))]
 mod implementation {
     use super::*;
     use backend::LocalStorage;
