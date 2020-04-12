@@ -12,6 +12,9 @@ cargo test --workspace
 cargo test --manifest-path storage/Cargo.toml --all-features
 cargo test --manifest-path file/Cargo.toml --all-features
 cargo test --manifest-path web/Cargo.toml --all-features
+cargo test --manifest-path static/Cargo.toml
+cargo test --manifest-path static/Cargo.toml --features file
+cargo test --manifest-path static/Cargo.toml --features web
 
 cargo clean
 
