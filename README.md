@@ -1,5 +1,5 @@
 # General Storage
 
-[![Travis-CI Status](https://travis-ci.org/stevebob/general-storage.svg?branch=master)](https://travis-ci.org/stevebob/general-storage)
+[![test](https://github.com/stevebob/general-storage/actions/workflows/test.yml/badge.svg)](https://github.com/stevebob/general-storage/actions/workflows/test.yml)
 
 Interfaces to persistent storage, with several implementations.
