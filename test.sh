@@ -16,9 +16,9 @@ cargo test --manifest-path static/Cargo.toml --features web
 
 cargo clean
 
-find -name node_modules -exec rm -rf {} \; || true
-find -name package-lock.json -delete || true
-find -name dist -exec rm -rf {} \; || true
+find . -name node_modules -exec rm -rf {} \; || true
+find . -name package-lock.json -delete || true
+find . -name dist -exec rm -rf {} \; || true
 
 pushd $DIR/examples/fib/web
 npm install
