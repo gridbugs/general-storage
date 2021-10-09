@@ -3,19 +3,28 @@ pub use serde::ser::Serialize;
 
 pub mod format;
 
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[derive(Debug)]
+pub struct StringError(pub String);
+impl std::fmt::Display for StringError {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        self.0.fmt(f)
+    }
+}
+impl std::error::Error for StringError {}
+
+#[derive(Debug)]
 pub enum RemoveError {
-    IoError,
+    IoError(Box<dyn std::error::Error>),
     NoSuchKey,
 }
 
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[derive(Debug)]
 pub enum LoadRawError {
-    IoError,
+    IoError(Box<dyn std::error::Error>),
     NoSuchKey,
 }
 
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[derive(Debug)]
 pub enum LoadError<E> {
     Raw(LoadRawError),
     FormatError(E),
@@ -77,7 +86,12 @@ pub trait Storage {
             .and_then(|v| F::from_slice(&v).map_err(LoadError::FormatError))
     }
 
-    fn store<K, T, F>(&mut self, key: K, value: &T, format: F) -> Result<(), StoreError<F::SerializeError>>
+    fn store<K, T, F>(
+        &mut self,
+        key: K,
+        value: &T,
+        format: F,
+    ) -> Result<(), StoreError<F::SerializeError>>
     where
         K: AsRef<str>,
         T: Serialize,

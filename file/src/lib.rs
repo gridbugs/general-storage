@@ -74,7 +74,7 @@ impl Storage for FileStorage {
         K: AsRef<str>,
     {
         let path = self.full_path(key);
-        fs::remove_file(path).map_err(|_| RemoveError::IoError)
+        fs::remove_file(path).map_err(|e| RemoveError::IoError(Box::new(e)))
     }
 
     fn load_raw<K>(&self, key: K) -> Result<Vec<u8>, LoadRawError>
@@ -84,7 +84,7 @@ impl Storage for FileStorage {
         let mut file = File::open(self.full_path(key)).map_err(|_| LoadRawError::NoSuchKey)?;
         let mut contents = Vec::new();
         file.read_to_end(&mut contents)
-            .map_err(|_| LoadRawError::IoError)?;
+            .map_err(|e| LoadRawError::IoError(Box::new(e)))?;
         Ok(contents)
     }
 

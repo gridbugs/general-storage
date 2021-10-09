@@ -51,7 +51,7 @@ impl Storage for LocalStorage {
     {
         self.local_storage
             .remove_item(key.as_ref())
-            .map_err(|_| RemoveError::IoError)
+            .map_err(|e| RemoveError::IoError(Box::new(StringError(format!("{:?}", e)))))
     }
 
     fn load_raw<K>(&self, key: K) -> Result<Vec<u8>, LoadRawError>
@@ -62,9 +62,10 @@ impl Storage for LocalStorage {
         let maybe_string = self
             .local_storage
             .get_item(key.as_ref())
-            .map_err(|_| LoadRawError::IoError)?;
+            .map_err(|e| LoadRawError::IoError(Box::new(StringError(format!("{:?}", e)))))?;
         let string = maybe_string.ok_or(LoadRawError::NoSuchKey)?;
-        serde_json::from_str(&string).map_err(|_| LoadRawError::IoError)
+        serde_json::from_str(&string)
+            .map_err(|e| LoadRawError::IoError(Box::new(StringError(format!("{:?}", e)))))
     }
 
     fn store_raw<K, V>(&mut self, key: K, value: V) -> Result<(), StoreRawError>
