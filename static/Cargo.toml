@@ -8,7 +8,7 @@ readme = "README.md"
 homepage = "https://github.com/gridbugs/general-storage.git"
 repository = "https://github.com/gridbugs/general-storage.git"
 documentation = "https://docs.rs/general_storage_static"
-edition = "2018"
+edition = "2021"
 
 [features]
 file = ["general_storage_file"]
