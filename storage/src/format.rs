@@ -51,6 +51,29 @@ impl StorageFormat for Json {
     }
 }
 
+#[cfg(feature = "json")]
+pub struct JsonPretty;
+
+#[cfg(feature = "json")]
+impl StorageFormat for JsonPretty {
+    type SerializeError = serde_json::error::Error;
+    type DeserializeError = serde_json::error::Error;
+
+    fn to_vec<T: ?Sized>(value: &T) -> Result<Vec<u8>, Self::SerializeError>
+    where
+        T: Serialize,
+    {
+        serde_json::to_vec_pretty(value)
+    }
+
+    fn from_slice<T>(bytes: &[u8]) -> Result<T, Self::DeserializeError>
+    where
+        T: DeserializeOwned,
+    {
+        serde_json::from_slice(bytes)
+    }
+}
+
 #[cfg(feature = "yaml")]
 pub struct Yaml;
 
