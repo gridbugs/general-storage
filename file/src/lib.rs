@@ -54,6 +54,13 @@ impl FileStorage {
         let relative_path: PathBuf = path.as_ref().into();
         self.base_path.join(relative_path)
     }
+
+    pub fn temp<P: AsRef<Path>>(
+        relative_path: P,
+        if_directory_missing: IfDirectoryMissing,
+    ) -> Result<Self, Error> {
+        Self::new(env::temp_dir().join(relative_path), if_directory_missing)
+    }
 }
 
 impl Storage for FileStorage {
