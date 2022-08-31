@@ -1,9 +1,6 @@
 pub use general_storage::*;
 
-#[cfg(any(
-    not(any(feature = "general_storage_file", feature = "general_storage_web")),
-    all(feature = "general_storage_file", feature = "general_storage_web"),
-))]
+#[cfg(any(not(any(feature = "general_storage_file", feature = "general_storage_web")),))]
 mod implementation {
     use super::*;
     pub struct StaticStorage(());
