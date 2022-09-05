@@ -86,7 +86,9 @@ impl StorageFormat for Yaml {
     where
         T: Serialize,
     {
-        serde_yaml::to_vec(value)
+        let mut vec = Vec::with_capacity(128);
+        serde_yaml::to_writer(&mut vec, value)?;
+        Ok(vec)
     }
 
     fn from_slice<T>(bytes: &[u8]) -> Result<T, Self::DeserializeError>
