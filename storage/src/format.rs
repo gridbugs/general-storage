@@ -103,22 +103,31 @@ impl StorageFormat for Yaml {
 pub struct Toml;
 
 #[cfg(feature = "toml")]
+#[derive(Clone, Debug)]
+pub enum TomlDeserializeError {
+    Utf8Error(std::str::Utf8Error),
+    TomlError(toml::de::Error),
+}
+
+#[cfg(feature = "toml")]
 impl StorageFormat for Toml {
     type SerializeError = toml::ser::Error;
-    type DeserializeError = toml::de::Error;
+    type DeserializeError = TomlDeserializeError;
 
     fn to_vec<T: ?Sized>(value: &T) -> Result<Vec<u8>, Self::SerializeError>
     where
         T: Serialize,
     {
-        toml::ser::to_vec(value)
+        toml::ser::to_string(value).map(|x| x.into_bytes())
     }
 
     fn from_slice<T>(bytes: &[u8]) -> Result<T, Self::DeserializeError>
     where
         T: DeserializeOwned,
     {
-        toml::de::from_slice(bytes)
+        std::str::from_utf8(bytes)
+            .map_err(TomlDeserializeError::Utf8Error)
+            .and_then(|s| toml::de::from_str(s).map_err(TomlDeserializeError::TomlError))
     }
 }
 
